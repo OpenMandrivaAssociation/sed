@@ -9,7 +9,6 @@ Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.bz2
 Patch0:		sed-4.1.1-dest_len-0.1.patch
 Requires(pre):	info-install
 BuildRequires:	texinfo
-Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 The sed (Stream EDitor) editor is a stream or batch (non-interactive)
