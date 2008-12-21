@@ -1,7 +1,7 @@
 Summary:	A GNU stream text editor
 Name:		sed
 Version:	4.1.5
-Release:	%mkrel 4
+Release:	%mkrel 5
 License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
@@ -20,7 +20,7 @@ specified in a script file or from the command line.
 
 %prep
 %setup -q
-%patch -p1 -b .dest_len
+%patch0 -p1 -b .dest_len
 
 %build
 %configure2_5x	--bindir=/bin
