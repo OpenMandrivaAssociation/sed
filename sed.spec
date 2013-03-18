@@ -28,6 +28,8 @@ specified in a script file or from the command line.
 %configure2_5x	--bindir=/bin
 %make LDFLAGS=-s
 %make html
+
+%check
 %make check
 
 %install
