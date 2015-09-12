@@ -3,7 +3,7 @@
 Summary:	A GNU stream text editor
 Name:		sed
 Version:	4.2.2
-Release:	14
+Release:	15
 License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
