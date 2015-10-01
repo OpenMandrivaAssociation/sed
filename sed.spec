@@ -10,6 +10,7 @@ Url:		http://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.bz2
 Source1:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.bz2.sig
 Patch0:		sed-4.1.1-dest_len-0.1.patch
+BuildRequires:	acl-devel
 Provides:	/bin/sed
 BuildRequires:	texinfo
 
@@ -25,12 +26,15 @@ specified in a script file or from the command line.
 %apply_patches
 
 %build
-%configure2_5x	--bindir=/bin
+%configure	\
+	--bindir=/bin \
+    --without-included-regex
+
 %make LDFLAGS=-s
 %make html
 
 %check
-%make check
+make check
 
 %install
 %makeinstall_std
@@ -43,4 +47,3 @@ rm -f %{buildroot}%{_docdir}/sed.html
 %attr(755,root,root) /bin/sed 
 %{_infodir}/sed.info*
 %{_mandir}/man1/sed.1*
-
