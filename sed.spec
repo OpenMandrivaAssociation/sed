@@ -33,8 +33,9 @@ specified in a script file or from the command line.
 %make LDFLAGS=-s
 %make html
 
-%check
-make check
+#(tpg) disable checks
+#check
+#make check
 
 %install
 %makeinstall_std
