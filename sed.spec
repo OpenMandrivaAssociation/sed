@@ -2,14 +2,12 @@
 
 Summary:	A GNU stream text editor
 Name:		sed
-Version:	4.2.2
-Release:	17
+Version:	4.3
+Release:	1
 License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
-Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.bz2
-Source1:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.bz2.sig
-Patch0:		sed-4.1.1-dest_len-0.1.patch
+Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
 BuildRequires:	acl-devel
 BuildRequires:	texinfo
 Provides:	/bin/sed
@@ -28,7 +26,10 @@ specified in a script file or from the command line.
 %build
 %configure	\
     --bindir=/bin \
-    --without-included-regex
+    --without-included-regex \
+    --with-packager="%{vendor}" \
+    --with-packager-version="%{distro_release}" \
+    --with-packager-bug-reports="%{disturl}"
 
 %make LDFLAGS=-s
 %make html
