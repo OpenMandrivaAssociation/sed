@@ -1,11 +1,11 @@
 %define debug_package %{nil}
 # (tpg) fails 2017-01-04
 # /tmp/lto-llvm-4c8404.o:ld-temp.o:function compile_regex_1: error: undefined reference to '__muloti4'
-%define _disable_ld_no_undefined 1
+%global optflags %{optflags} -03 -rtlib=compiler-rt
 
 Summary:	A GNU stream text editor
 Name:		sed
-Version:	4.4
+Version:	4.5
 Release:	1
 License:	GPL
 Group:		Text tools
@@ -24,7 +24,7 @@ specified in a script file or from the command line.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 
 %build
 %configure	\
@@ -34,21 +34,20 @@ specified in a script file or from the command line.
     --with-packager-version="%{distro_release}" \
     --with-packager-bug-reports="%{disturl}"
 
-%make LDFLAGS=-s
-%make html
+%make_build LDFLAGS=-s
 
 #(tpg) disable checks
 #check
 #make check
 
 %install
-%makeinstall_std
+%make_install
 rm -f %{buildroot}%{_docdir}/sed.html
 
 %find_lang %{name}
 
 %files -f %{name}.lang
-%doc BUGS NEWS README doc/sed.html
+%doc BUGS NEWS README
 %attr(755,root,root) /bin/sed
 %{_infodir}/sed.info*
 %{_mandir}/man1/sed.1*
