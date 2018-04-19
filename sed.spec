@@ -11,6 +11,7 @@ License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
+Patch0:		sed-4.5-check-for-__builtin_mul_overflow_p.patch
 BuildRequires:	acl-devel
 BuildRequires:	texinfo
 Provides:	/bin/sed
@@ -27,7 +28,7 @@ specified in a script file or from the command line.
 %autopatch -p1
 
 %build
-%configure	\
+%configure \
     --bindir=/bin \
     --without-included-regex \
     --with-packager="%{vendor}" \
