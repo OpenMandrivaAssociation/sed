@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 # (tpg) fails 2017-01-04
 # /tmp/lto-llvm-4c8404.o:ld-temp.o:function compile_regex_1: error: undefined reference to '__muloti4'
-%global optflags %{optflags} -03 -rtlib=compiler-rt
+%global optflags %{optflags} -O3 -rtlib=compiler-rt
 
 Summary:	A GNU stream text editor
 Name:		sed
