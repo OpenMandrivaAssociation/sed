@@ -1,12 +1,12 @@
 %define debug_package %{nil}
 # (tpg) fails 2017-01-04
 # /tmp/lto-llvm-4c8404.o:ld-temp.o:function compile_regex_1: error: undefined reference to '__muloti4'
-%global optflags %{optflags} -O3 -rtlib=compiler-rt
+%global optflags %{optflags} -Ofast -rtlib=compiler-rt
 
 Summary:	A GNU stream text editor
 Name:		sed
 Version:	4.5
-Release:	2
+Release:	3
 License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
