@@ -12,9 +12,6 @@ Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
 Patch0:		sed-4.5-check-for-__builtin_mul_overflow_p.patch
-#Build failure with glibc-2.28
-#https://lists.gnu.org/r/bug-gnulib/2018-03/msg00000.html
-Patch1:		sed-gnulib.patch
 BuildRequires:	acl-devel
 BuildRequires:	texinfo
 Provides:	/bin/sed
