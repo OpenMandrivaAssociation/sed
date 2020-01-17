@@ -1,4 +1,9 @@
 %define debug_package %{nil}
+# (tpg) fails 2017-01-04
+# /tmp/lto-llvm-4c8404.o:ld-temp.o:function compile_regex_1: error: undefined reference to '__muloti4'
+%ifnarch riscv64
+%global optflags %{optflags} -Os -rtlib=compiler-rt
+%endif
 
 Summary:	A GNU stream text editor
 Name:		sed
@@ -8,7 +13,8 @@ License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
-BuildRequires:	acl-devel
+Patch0:		sed-4.5-check-for-__builtin_mul_overflow_p.patch
+BuildRequires:	pkgconfig(libacl)
 BuildRequires:	texinfo
 Provides:	/bin/sed
 

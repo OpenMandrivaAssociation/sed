@@ -1,0 +1,126 @@
+diff -Naur sed-4.8/configure.ac sed-4.8.tpg/configure.ac
+--- sed-4.8/configure.ac	2020-01-10 06:50:13.000000000 +0000
++++ sed-4.8.tpg/configure.ac	2020-01-17 11:39:15.682649420 +0000
+@@ -36,6 +36,18 @@
+ # Note -Wvla is implicitly added by gl_MANYWARN_ALL_GCC
+ AC_DEFINE([GNULIB_NO_VLA], [1], [Define to 1 to disable use of VLAs])
+ 
++AC_CACHE_CHECK([for gcc 7-compatible __builtin_mul_overflow_p],
++  [utils_cv_builtin_mul_overflow_p],
++  [AC_COMPILE_IFELSE(
++    [AC_LANG_PROGRAM(
++      [[]],
++      [[return __builtin_mul_overflow_p(1, 2, 3);]])],
++    [utils_cv_builtin_mul_overflow_p=yes],
++    [utils_cv_builtin_mul_overflow_p=no])])
++if test $utils_cv_builtin_mul_overflow_p = yes; then
++  AC_DEFINE([HAVE_BUILTIN_MUL_OVERFLOW_P], [1], [Define if your compiler supports __builtin_mul_overflow_p])
++fi
++
+ # The test suite needs to know if we have a working perl.
+ # FIXME: this is suboptimal.  Ideally, we would be able to call gl_PERL
+ # with an ACTION-IF-NOT-FOUND argument ...
+diff -Naur sed-4.8/gnulib-tests/macros.h sed-4.8.tpg/gnulib-tests/macros.h
+--- sed-4.8/gnulib-tests/macros.h	2020-01-01 17:30:53.000000000 +0000
++++ sed-4.8.tpg/gnulib-tests/macros.h	2020-01-17 11:39:23.584648870 +0000
+@@ -22,7 +22,7 @@
+ #include <stdlib.h>
+ 
+ #ifndef FALLTHROUGH
+-# if __GNUC__ < 7
++# if __GNUC__ < 7 || !__has_attribute(__fallthrough__)
+ #  define FALLTHROUGH ((void) 0)
+ # else
+ #  define FALLTHROUGH __attribute__ ((__fallthrough__))
+diff -Naur sed-4.8/lib/dfa.c sed-4.8.tpg/lib/dfa.c
+--- sed-4.8/lib/dfa.c	2020-01-01 17:30:53.000000000 +0000
++++ sed-4.8.tpg/lib/dfa.c	2020-01-17 11:39:37.491647904 +0000
+@@ -62,7 +62,7 @@
+ #include "localeinfo.h"
+ 
+ #ifndef FALLTHROUGH
+-# if __GNUC__ < 7
++# if __GNUC__ < 7 || !__has_attribute(__fallthrough__)
+ #  define FALLTHROUGH ((void) 0)
+ # else
+ #  define FALLTHROUGH __attribute__ ((__fallthrough__))
+diff -Naur sed-4.8/lib/intprops.h sed-4.8.tpg/lib/intprops.h
+--- sed-4.8/lib/intprops.h	2020-01-01 17:59:13.000000000 +0000
++++ sed-4.8.tpg/lib/intprops.h	2020-01-17 11:43:02.927633629 +0000
+@@ -238,15 +238,11 @@
+ # define _GL_HAS_BUILTIN_MUL_OVERFLOW _GL_HAS_BUILTIN_ADD_OVERFLOW
+ #endif
+ 
+-/* True if __builtin_add_overflow_p (A, B, C) works, and similarly for
+-   __builtin_mul_overflow_p and __builtin_mul_overflow_p.  */
+-#define _GL_HAS_BUILTIN_OVERFLOW_P (7 <= __GNUC__)
+-
+ /* The _GL*_OVERFLOW macros have the same restrictions as the
+    *_RANGE_OVERFLOW macros, except that they do not assume that operands
+    (e.g., A and B) have the same type as MIN and MAX.  Instead, they assume
+    that the result (e.g., A + B) has that type.  */
+-#if _GL_HAS_BUILTIN_OVERFLOW_P
++#ifdef HAVE_BUILTIN_MUL_OVERFLOW_P
+ # define _GL_ADD_OVERFLOW(a, b, min, max)                               \
+    __builtin_add_overflow_p (a, b, (__typeof__ ((a) + (b))) 0)
+ # define _GL_SUBTRACT_OVERFLOW(a, b, min, max)                          \
+diff -Naur sed-4.8/lib/mbrtowc.c sed-4.8.tpg/lib/mbrtowc.c
+--- sed-4.8/lib/mbrtowc.c	2020-01-04 06:06:14.000000000 +0000
++++ sed-4.8.tpg/lib/mbrtowc.c	2020-01-17 11:39:58.123646470 +0000
+@@ -55,7 +55,7 @@
+ # include "mbtowc-lock.h"
+ 
+ # ifndef FALLTHROUGH
+-#  if __GNUC__ < 7
++#  if __GNUC__ < 7 || !__has_attribute(__fallthrough__)
+ #   define FALLTHROUGH ((void) 0)
+ #  else
+ #   define FALLTHROUGH __attribute__ ((__fallthrough__))
+diff -Naur sed-4.8/lib/quotearg.c sed-4.8.tpg/lib/quotearg.c
+--- sed-4.8/lib/quotearg.c	2020-01-01 17:30:53.000000000 +0000
++++ sed-4.8.tpg/lib/quotearg.c	2020-01-17 11:40:26.411644505 +0000
+@@ -55,7 +55,7 @@
+ #define INT_BITS (sizeof (int) * CHAR_BIT)
+ 
+ #ifndef FALLTHROUGH
+-# if __GNUC__ < 7
++# if __GNUC__ < 7 || !__has_attribute(__fallthrough__)
+ #  define FALLTHROUGH ((void) 0)
+ # else
+ #  define FALLTHROUGH __attribute__ ((__fallthrough__))
+diff -Naur sed-4.8/lib/regex_internal.h sed-4.8.tpg/lib/regex_internal.h
+--- sed-4.8/lib/regex_internal.h	2020-01-01 17:59:13.000000000 +0000
++++ sed-4.8.tpg/lib/regex_internal.h	2020-01-17 11:40:45.875643152 +0000
+@@ -852,7 +852,7 @@
+ #endif /* RE_ENABLE_I18N */
+ 
+ #ifndef FALLTHROUGH
+-# if __GNUC__ < 7
++# if __GNUC__ < 7 || !__has_attribute(__fallthrough__)
+ #  define FALLTHROUGH ((void) 0)
+ # else
+ #  define FALLTHROUGH __attribute__ ((__fallthrough__))
+diff -Naur sed-4.8/lib/xalloc-oversized.h sed-4.8.tpg/lib/xalloc-oversized.h
+--- sed-4.8/lib/xalloc-oversized.h	2020-01-01 17:30:53.000000000 +0000
++++ sed-4.8.tpg/lib/xalloc-oversized.h	2020-01-17 11:41:56.395638252 +0000
+@@ -41,7 +41,7 @@
+    positive and N must be nonnegative.  This is a macro, not a
+    function, so that it works correctly even when SIZE_MAX < N.  */
+ 
+-#if 7 <= __GNUC__
++#ifdef HAVE_BUILTIN_MUL_OVERFLOW_P
+ # define xalloc_oversized(n, s) \
+    __builtin_mul_overflow_p (n, s, (__xalloc_count_type) 1)
+ #elif 5 <= __GNUC__ && !defined __ICC && !__STRICT_ANSI__
+diff -Naur sed-4.8/sed/sed.h sed-4.8.tpg/sed/sed.h
+--- sed-4.8/sed/sed.h	2020-01-01 19:38:19.000000000 +0000
++++ sed-4.8.tpg/sed/sed.h	2020-01-17 11:41:27.051640291 +0000
+@@ -285,7 +285,7 @@
+ #endif
+ 
+ #ifndef FALLTHROUGH
+-# if __GNUC__ < 7
++# if __GNUC__ < 7 || !__has_attribute(__fallthrough__)
+ #  define FALLTHROUGH ((void) 0)
+ # else
+ #  define FALLTHROUGH __attribute__ ((__fallthrough__))
