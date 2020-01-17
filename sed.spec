@@ -1,9 +1,4 @@
 %define debug_package %{nil}
-# (tpg) fails 2017-01-04
-# /tmp/lto-llvm-4c8404.o:ld-temp.o:function compile_regex_1: error: undefined reference to '__muloti4'
-%ifnarch riscv64
-%global optflags %{optflags} -Os -rtlib=compiler-rt
-%endif
 
 Summary:	A GNU stream text editor
 Name:		sed
@@ -13,7 +8,6 @@ License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
-Patch0:		sed-4.5-check-for-__builtin_mul_overflow_p.patch
 BuildRequires:	acl-devel
 BuildRequires:	texinfo
 Provides:	/bin/sed
@@ -26,8 +20,7 @@ that sed performs (substitutions, deletions, insertions, etc.) can be
 specified in a script file or from the command line.
 
 %prep
-%setup -q
-%autopatch -p1
+%autosetup -p1
 
 %build
 %configure \
