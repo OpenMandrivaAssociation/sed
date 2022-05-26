@@ -8,7 +8,7 @@
 Summary:	A GNU stream text editor
 Name:		sed
 Version:	4.8
-Release:	1
+Release:	2
 License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
@@ -30,7 +30,6 @@ specified in a script file or from the command line.
 
 %build
 %configure \
-    --bindir=/bin \
     --without-included-regex \
     --with-packager="%{vendor}" \
     --with-packager-version="%{distro_release}" \
@@ -46,10 +45,14 @@ specified in a script file or from the command line.
 %make_install
 rm -f %{buildroot}%{_docdir}/sed.html
 
+mkdir -p %{buildroot}/bin
+ln -s %{_bindir}/sed %{buildroot}/bin/sed
+
 %find_lang %{name}
 
 %files -f %{name}.lang
 %doc BUGS NEWS README
-%attr(755,root,root) /bin/sed
-%{_infodir}/sed.info*
-%{_mandir}/man1/sed.1*
+%attr(755,root,root) %{_bindir}/sed
+/bin/sed
+%doc %{_infodir}/sed.info*
+%doc %{_mandir}/man1/sed.1*
