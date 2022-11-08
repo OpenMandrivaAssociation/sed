@@ -7,13 +7,13 @@
 
 Summary:	A GNU stream text editor
 Name:		sed
-Version:	4.8
-Release:	3
+Version:	4.9
+Release:	1
 License:	GPL
 Group:		Text tools
 Url:		http://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
-Patch0:		sed-4.5-check-for-__builtin_mul_overflow_p.patch
+Patch0:		sed-4.9-clang.patch
 BuildRequires:	pkgconfig(libacl)
 BuildRequires:	texinfo
 Provides:	/bin/sed

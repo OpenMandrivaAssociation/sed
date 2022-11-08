@@ -1,0 +1,96 @@
+diff -up sed-4.9/config_h.in.omv~ sed-4.9/config_h.in
+--- sed-4.9/config_h.in.omv~	2022-11-08 14:13:07.720727796 +0100
++++ sed-4.9/config_h.in	2022-11-08 14:13:42.357906197 +0100
+@@ -2092,7 +2092,11 @@
+    can be freed via 'free'; it can be used only after declaring 'free'.  */
+ /* Applies to: functions.  Cannot be used on inline functions.  */
+ #if _GL_GNUC_PREREQ (11, 0)
+-# define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++# ifdef __clang__
++#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__))
++# else
++#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++# endif
+ #else
+ # define _GL_ATTRIBUTE_DEALLOC(f, i)
+ #endif
+diff -up sed-4.9/gnulib-tests/dirent.in.h.omv~ sed-4.9/gnulib-tests/dirent.in.h
+--- sed-4.9/gnulib-tests/dirent.in.h.omv~	2022-11-08 14:41:17.328884754 +0100
++++ sed-4.9/gnulib-tests/dirent.in.h	2022-11-08 14:41:39.142389361 +0100
+@@ -60,7 +60,11 @@ typedef struct gl_directory DIR;
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+ # if __GNUC__ >= 11
+-#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  ifdef __clang__
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__))
++#  else
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  endif
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+ # endif
+diff -up sed-4.9/lib/stdio.in.h.omv~ sed-4.9/lib/stdio.in.h
+--- sed-4.9/lib/stdio.in.h.omv~	2022-11-08 14:42:16.079348989 +0100
++++ sed-4.9/lib/stdio.in.h	2022-11-08 14:42:33.182819169 +0100
+@@ -96,7 +96,11 @@
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+ # if __GNUC__ >= 11
+-#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  ifdef __clang__
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__))
++#  else
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  endif
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+ # endif
+diff -up sed-4.9/lib/string.in.h.omv~ sed-4.9/lib/string.in.h
+--- sed-4.9/lib/string.in.h.omv~	2022-11-08 14:42:40.782880211 +0100
++++ sed-4.9/lib/string.in.h	2022-11-08 14:42:56.083003521 +0100
+@@ -72,7 +72,11 @@
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+ # if __GNUC__ >= 11
+-#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  ifdef __clang__
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__))
++#  else
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  endif
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+ # endif
+diff -up sed-4.9/lib/wchar.in.h.omv~ sed-4.9/lib/wchar.in.h
+--- sed-4.9/lib/wchar.in.h.omv~	2022-11-08 14:43:09.636446547 +0100
++++ sed-4.9/lib/wchar.in.h	2022-11-08 14:43:23.786561519 +0100
+@@ -89,7 +89,11 @@
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+ # if __GNUC__ >= 11
+-#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  ifdef __clang__
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__))
++#  else
++#   define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++#  endif
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+ # endif
+diff -up sed-4.9/m4/gnulib-common.m4.omv~ sed-4.9/m4/gnulib-common.m4
+--- sed-4.9/m4/gnulib-common.m4.omv~	2022-11-08 14:41:47.892458433 +0100
++++ sed-4.9/m4/gnulib-common.m4	2022-11-08 14:42:04.665924749 +0100
+@@ -183,7 +183,11 @@ AC_DEFUN([gl_COMMON_BODY], [
+    can be freed via 'free'; it can be used only after declaring 'free'.  */
+ /* Applies to: functions.  Cannot be used on inline functions.  */
+ #if _GL_GNUC_PREREQ (11, 0)
+-# define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++# ifdef __clang__
++#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__))
++# else
++#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
++# endif
+ #else
+ # define _GL_ATTRIBUTE_DEALLOC(f, i)
+ #endif
