@@ -7,7 +7,7 @@ Version:	4.9
 Release:	3
 License:	GPL
 Group:		Text tools
-Url:		http://www.gnu.org/software/sed/
+Url:		https://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
 Patch0:		sed-4.9-clang.patch
 BuildRequires:	pkgconfig(libacl)
