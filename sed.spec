@@ -10,6 +10,11 @@ Group:		Text tools
 Url:		https://www.gnu.org/software/sed/
 Source0:	ftp://ftp.gnu.org/pub/gnu/sed/%{name}-%{version}.tar.xz
 Patch0:		sed-4.9-clang.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(libacl)
 BuildRequires:	texinfo
 Provides:	/bin/sed
